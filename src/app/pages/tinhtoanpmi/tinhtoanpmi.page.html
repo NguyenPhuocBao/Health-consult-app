@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Tính toán BMI, Z-score</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item>
+      <ion-label>Ngày đo *</ion-label>
+      <ion-datetime placeholder="09/04/2025" display-format="DD/MM/YYYY"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Ngày sinh của bạn *</ion-label>
+      <ion-datetime placeholder="11/09/2004" display-format="DD/MM/YYYY"></ion-datetime>
+      <ion-input type="number" placeholder="20" slot="end"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Giới tính *</ion-label>
+      <ion-radio-group>
+        <ion-radio value="male" checked>Nam</ion-radio>
+        <ion-radio value="female">Nữ</ion-radio>
+      </ion-radio-group>
+    </ion-item>
+    <ion-item>
+      <ion-label>Cân nặng *</ion-label>
+      <ion-input type="number" placeholder="Kg"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Chiều cao *</ion-label>
+      <ion-input type="number" placeholder="Cm"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" color="success">Tính toán</ion-button>
+  <ion-button expand="block" color="warning" fill="outline">Làm mới</ion-button>
+</ion-content>

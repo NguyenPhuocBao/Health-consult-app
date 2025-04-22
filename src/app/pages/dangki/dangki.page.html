@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/dang-nhap"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Đăng ký</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Tài khoản đăng nhập</ion-label>
+      <ion-input placeholder="Tài khoản đăng nhập"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Họ tên</ion-label>
+      <ion-input placeholder="Họ tên"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Email của bạn</ion-label>
+      <ion-input type="email" placeholder="Email của bạn"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Mật khẩu</ion-label>
+      <ion-input type="password" placeholder="Nhập mật khẩu của bạn"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Mật khẩu</ion-label>
+      <ion-input type="password" placeholder="Nhập lại mật khẩu"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Tỉnh/TP</ion-label>
+      <ion-select placeholder="Tỉnh/TP">
+        <ion-select-option value="option1">Tùy chọn 1</ion-select-option>
+        <ion-select-option value="option2">Tùy chọn 2</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" color="success">Đăng ký</ion-button>
+  <p class="register-link">Bạn đã có tài khoản? <a href="/dang-nhap">Đăng nhập ngay</a></p>
+</ion-content>

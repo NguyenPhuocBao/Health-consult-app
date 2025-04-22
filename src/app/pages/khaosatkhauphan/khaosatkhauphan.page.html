@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Khảo sát khẩu phần</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Thông tin cá nhân</h2>
+  <ion-list>
+    <ion-item>
+      <ion-label>Ngày sinh của bạn *</ion-label>
+      <ion-datetime placeholder="11/09/2004" display-format="DD/MM/YYYY"></ion-datetime>
+      <ion-input type="number" placeholder="20" slot="end"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Giới tính *</ion-label>
+      <ion-radio-group>
+        <ion-radio value="male" checked>Nam</ion-radio>
+        <ion-radio value="female">Nữ</ion-radio>
+      </ion-radio-group>
+    </ion-item>
+    <ion-item>
+      <ion-label>Mức độ hoạt động thể lực *</ion-label>
+      <ion-radio-group>
+        <ion-radio value="low">Nặng</ion-radio>
+        <ion-radio value="medium">Trung Bình</ion-radio>
+        <ion-radio value="high" checked>Nhẹ</ion-radio>
+      </ion-radio-group>
+    </ion-item>
+    <ion-item>
+      <ion-label>Cân nặng *</ion-label>
+      <ion-input type="number" placeholder="Kg"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Chiều cao *</ion-label>
+      <ion-input type="number" placeholder="Cm"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Chế độ ăn *</ion-label>
+      <ion-select placeholder="Chọn...">
+        <ion-select-option value="option1">Tùy chọn 1</ion-select-option>
+        <ion-select-option value="option2">Tùy chọn 2</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Ngày ăn được khảo sát *</ion-label>
+      <ion-datetime placeholder="09/04/2025" display-format="DD/MM/YYYY"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Số bữa ăn *</ion-label>
+      <ion-input type="number" placeholder=""></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" color="success">Tiếp theo</ion-button>
+</ion-content>

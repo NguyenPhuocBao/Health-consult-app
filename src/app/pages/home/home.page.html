@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Dashboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="welcome-section">
+    <h2>Xin chào, {{ username }}</h2>
+    <p>Hôm nay, {{ today }}</p>
+  </div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-card routerLink="/tracuudinhduong">
+          <img src="assets/images/tra-cuu-dinh-duong.png" alt="Tra cứu dinh dưỡng" />
+          <ion-card-content>
+            <h3>Tra cứu dinh dưỡng</h3>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card routerLink="/tinhtoanbmi">
+          <img src="assets/images/tinh-toan-bmi.png" alt="Tính toán BMI" />
+          <ion-card-content>
+            <h3>Tính toán BMI, Z-score</h3>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-card routerLink="/khaosatkhauphan">
+          <img src="assets/images/khao-sat-khau-phan.png" alt="Khảo sát khẩu phần" />
+          <ion-card-content>
+            <h3>Khảo sát khẩu phần</h3>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card routerLink="/thietkethucdon">
+          <img src="assets/images/thiet-ke-thuc-don.png" alt="Thiết kế thực đơn" />
+          <ion-card-content>
+            <h3>Thiết kế thực đơn</h3>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<!-- <ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="dashboard" selected>
+      <ion-icon [name]="icons.apps"></ion-icon>
+      <ion-label>Dashboard</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="chatbot">
+      <ion-icon [name]="icons.chatbox"></ion-icon>
+      <ion-label>Chatbot</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="trang-ca-nhan">
+      <ion-icon [name]="icons.person"></ion-icon>
+      <ion-label>Trang cá nhân</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs> -->

@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Tra cứu dinh dưỡng</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-searchbar placeholder="Nhập từ khóa để tìm kiếm"></ion-searchbar>
+
+  <ion-segment value="ngu-coc">
+    <ion-segment-button value="ngu-coc">
+      <ion-label>Ngũ cốc và sản phẩm chế biến</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="khoai-cu">
+      <ion-label>Khoai củ và sản phẩm chế biến</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-list>
+    <ion-item>
+      <ion-icon name="restaurant-outline" slot="start"></ion-icon>
+      <ion-label>Sữa bột tưới</ion-label>
+      <ion-badge color="warning">74.4 Kal</ion-badge>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="restaurant-outline" slot="start"></ion-icon>
+      <ion-label>Sữa đặc tưới</ion-label>
+      <ion-badge color="warning">68.9 Kal</ion-badge>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="restaurant-outline" slot="start"></ion-icon>
+      <ion-label>Sữa mẹ (sữa người)</ion-label>
+      <ion-badge color="warning">61 Kal</ion-badge>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="restaurant-outline" slot="start"></ion-icon>
+      <ion-label>Sữa chua</ion-label>
+      <ion-badge color="warning">60.9 Kal</ion-badge>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="restaurant-outline" slot="start"></ion-icon>
+      <ion-label>Sữa chua vắt béo</ion-label>
+      <ion-badge color="warning">26 Kal</ion-badge>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="restaurant-outline" slot="start"></ion-icon>
+      <ion-label>Sữa bột tôm phân</ion-label>
+      <ion-badge color="warning">494 Kal</ion-badge>
+    </ion-item>
+  </ion-list>
+</ion-content>

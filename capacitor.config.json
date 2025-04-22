@@ -1,0 +1,6 @@
+{
+  "appId": "com.health.consult.app",
+  "appName": "HealthConsultApp",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

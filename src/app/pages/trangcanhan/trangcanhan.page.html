@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Trang cá nhân</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="profile-section">
+    <ion-avatar>
+      <img src="assets/images/avatar-placeholder.png" alt="Avatar" />
+    </ion-avatar>
+    <h2>Nguyễn Phước Bảo</h2>
+    <p>baonp.221tb&#64;vku.udn.vn</p>
+    <ion-button color="success" fill="outline">Chỉnh sửa thông tin</ion-button>
+  </div>
+
+  <ion-list>
+    <ion-item routerLink="/nhat-ky-can-do">
+      <ion-icon name="calendar-outline" slot="start"></ion-icon>
+      <ion-label>Nhật ký cân đo</ion-label>
+    </ion-item>
+    <ion-item routerLink="/khao-sat-khau-phan">
+      <ion-icon name="restaurant-outline" slot="start"></ion-icon>
+      <ion-label>Khảo sát khẩu phần</ion-label>
+    </ion-item>
+    <ion-item routerLink="/thuc-don-thiet-ke">
+      <ion-icon name="list-outline" slot="start"></ion-icon>
+      <ion-label>Thực đơn thiết kế</ion-label>
+    </ion-item>
+    <ion-item routerLink="/doi-mat-khau">
+      <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+      <ion-label>Đổi mật khẩu</ion-label>
+    </ion-item>
+    <ion-item routerLink="/quan-ly-tai-khoan">
+      <ion-icon name="settings-outline" slot="start"></ion-icon>
+      <ion-label>Quản lý tài khoản</ion-label>
+    </ion-item>
+    <ion-item routerLink="/thong-tin-ung-dung">
+      <ion-icon name="information-circle-outline" slot="start"></ion-icon>
+      <ion-label>Thông tin ứng dụng</ion-label>
+    </ion-item>
+    <ion-item routerLink="/dang-xuat">
+      <ion-icon name="log-out-outline" slot="start"></ion-icon>
+      <ion-label>Đăng xuất</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="dashboard">
+      <ion-icon name="apps-outline"></ion-icon>
+      <ion-label>Dashboard</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="chatbot">
+      <ion-icon name="chatbox-outline"></ion-icon>
+      <ion-label>Chatbot</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="trang-ca-nhan" selected>
+      <ion-icon name="person-outline"></ion-icon>
+      <ion-label>Trang cá nhân</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
