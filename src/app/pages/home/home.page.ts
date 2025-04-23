@@ -1,42 +1,24 @@
+// home.page.ts
 import { Component } from '@angular/core';
-import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonCard,
-  IonCardContent,
-  //IonIcon
+import { 
+  IonHeader, IonToolbar, IonTitle, IonContent,
+  IonGrid, IonRow, IonCol, IonCard, IonCardContent,
+  IonIcon, IonRouterLink
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import {
-  appsOutline,
-  chatboxOutline,
-  personOutline
-} from 'ionicons/icons';
+import { appsOutline, chatboxOutline, personOutline } from 'ionicons/icons';
 
 @Component({
-  selector: 'app-root', // 👈 Quan trọng! Trùng với <app-root> trong index.html
   standalone: true,
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   imports: [
     CommonModule,
     RouterModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonGrid,
-    IonRow,
-    IonCol,
-    IonCard,
-    IonCardContent,
-   // IonIcon
+    IonHeader, IonToolbar, IonTitle, IonContent,
+    IonGrid, IonRow, IonCol, IonCard, IonCardContent,
+    IonIcon, IonRouterLink
   ]
 })
 export class HomePage {
@@ -46,10 +28,4 @@ export class HomePage {
     month: '2-digit',
     year: 'numeric'
   });
-
-  icons = {
-    appsOutline,
-    chatboxOutline,
-    personOutline
-  };
 }

@@ -1,0 +1,10 @@
+<nav class="bottom-nav">
+  <a 
+    *ngFor="let item of navItems"
+    [routerLink]="item.path"
+    routerLinkActive="active"
+    class="nav-item"
+  >
+    {{ item.label }} <!-- Chỉ hiển thị label -->
+  </a>
+</nav>

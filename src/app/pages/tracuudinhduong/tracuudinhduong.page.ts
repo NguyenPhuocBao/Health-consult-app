@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { 
   IonHeader,
   IonToolbar,
@@ -17,16 +17,20 @@ import {
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { addIcons } from 'ionicons';
-import { restaurantOutline } from 'ionicons/icons';
+//import { addIcons } from 'ionicons';
+import { restaurantOutline, searchOutline, nutritionOutline } from 'ionicons/icons';
 
 interface FoodItem {
   name: string;
   calories: number;
+  protein?: number;
+  carbs?: number;
+  fat?: number;
   category: string;
 }
 
 @Component({
+  selector: 'app-tra-cuu-dinh-duong',
   standalone: true,
   templateUrl: './tracuudinhduong.page.html',
   styleUrls: ['./tracuudinhduong.page.scss'],
@@ -49,25 +53,61 @@ interface FoodItem {
     IonIcon
   ]
 })
-export class TraCuuDinhDuongPage {
-  searchTerm: string = '';
-  selectedCategory: string = 'ngu-coc';
+export class TraCuuDinhDuongPage implements OnInit {
+  searchTerm = '';
+  selectedCategory = 'all';
   
-  foodItems: FoodItem[] = [
-    { name: 'Sữa bột tưới', calories: 74.4, category: 'ngu-coc' },
-    { name: 'Sữa đặc tưới', calories: 68.9, category: 'ngu-coc' },
-    { name: 'Sữa mẹ (sữa người)', calories: 61, category: 'ngu-coc' },
-    { name: 'Sữa chua', calories: 60.9, category: 'ngu-coc' },
-    { name: 'Sữa chua vắt béo', calories: 26, category: 'ngu-coc' },
-    { name: 'Sữa bột tôm phân', calories: 494, category: 'ngu-coc' },
-    { name: 'Khoai lang', calories: 86, category: 'khoai-cu' },
-    { name: 'Khoai tây', calories: 77, category: 'khoai-cu' }
+  categories = [
+    { value: 'all', label: 'Tất cả' },
+    { value: 'ngu-coc', label: 'Ngũ cốc' },
+    { value: 'khoai-cu', label: 'Khoai củ' },
+    { value: 'thit', label: 'Thịt' },
+    { value: 'rau-cu', label: 'Rau củ' }
   ];
 
-  filteredItems: FoodItem[] = [...this.foodItems];
+  foodItems: FoodItem[] = [
+    { 
+      name: 'Gạo trắng', 
+      calories: 130, 
+      protein: 2.7, 
+      carbs: 28, 
+      fat: 0.3,
+      category: 'ngu-coc' 
+    },
+    { 
+      name: 'Thịt gà', 
+      calories: 165, 
+      protein: 31, 
+      carbs: 0, 
+      fat: 3.6,
+      category: 'thit' 
+    },
+    { 
+      name: 'Khoai lang', 
+      calories: 86, 
+      protein: 1.6, 
+      carbs: 20, 
+      fat: 0.1,
+      category: 'khoai-cu' 
+    },
+    { 
+      name: 'Rau muống', 
+      calories: 19, 
+      protein: 2.6, 
+      carbs: 3.1, 
+      fat: 0.2,
+      category: 'rau-cu' 
+    }
+  ];
 
-  constructor() {
-    addIcons({ restaurantOutline });
+  filteredItems: FoodItem[] = [];
+
+  // constructor() {
+  //   addIcons({ restaurantOutline, searchOutline, nutritionOutline });
+  // }
+
+  ngOnInit() {
+    this.filterItems();
   }
 
   filterItems() {
@@ -78,13 +118,17 @@ export class TraCuuDinhDuongPage {
     });
   }
 
-  onSearchChange(event: any) {
+  onSearchChange(event: CustomEvent) {
     this.searchTerm = event.detail.value || '';
     this.filterItems();
   }
 
-  onSegmentChange(event: any) {
+  onSegmentChange(event: CustomEvent) {
     this.selectedCategory = event.detail.value;
     this.filterItems();
+  }
+
+  getCategoryLabel(value: string): string {
+    return this.categories.find(c => c.value === value)?.label || value;
   }
 }

@@ -23,6 +23,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
+  selector: 'app-khaosatkhauphan',
   standalone: true,
   templateUrl: './khaosatkhauphan.page.html',
   styleUrls: ['./khaosatkhauphan.page.scss'],

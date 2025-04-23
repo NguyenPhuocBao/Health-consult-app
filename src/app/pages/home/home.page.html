@@ -13,16 +13,14 @@
   <ion-grid>
     <ion-row>
       <ion-col size="6">
-        <ion-card routerLink="/tracuudinhduong">
-          <img src="assets/images/tra-cuu-dinh-duong.png" alt="Tra cứu dinh dưỡng" />
+        <ion-card button routerLink="/tra-cuu-dinh-duong"> <!-- Đảm bảo đúng đường dẫn -->
           <ion-card-content>
             <h3>Tra cứu dinh dưỡng</h3>
           </ion-card-content>
         </ion-card>
       </ion-col>
       <ion-col size="6">
-        <ion-card routerLink="/tinhtoanbmi">
-          <img src="assets/images/tinh-toan-bmi.png" alt="Tính toán BMI" />
+        <ion-card button routerLink="/tinh-toan-bmi">
           <ion-card-content>
             <h3>Tính toán BMI, Z-score</h3>
           </ion-card-content>
@@ -31,18 +29,16 @@
     </ion-row>
     <ion-row>
       <ion-col size="6">
-        <ion-card routerLink="/khaosatkhauphan">
-          <img src="assets/images/khao-sat-khau-phan.png" alt="Khảo sát khẩu phần" />
+        <ion-card button routerLink="/khao-sat-khau-phan">
           <ion-card-content>
             <h3>Khảo sát khẩu phần</h3>
           </ion-card-content>
         </ion-card>
       </ion-col>
       <ion-col size="6">
-        <ion-card routerLink="/thietkethucdon">
-          <img src="assets/images/thiet-ke-thuc-don.png" alt="Thiết kế thực đơn" />
+        <ion-card button routerLink="/thiet-ke-thuc-don">
           <ion-card-content>
-            <h3>Thiết kế thực đơn</h3>
+            <h3>Xây dựng thực đơn</h3>
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -53,15 +49,15 @@
 <!-- <ion-tabs>
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="dashboard" selected>
-      <ion-icon [name]="icons.apps"></ion-icon>
+      <ion-icon [icon]="icons.appsOutline"></ion-icon>
       <ion-label>Dashboard</ion-label>
     </ion-tab-button>
     <ion-tab-button tab="chatbot">
-      <ion-icon [name]="icons.chatbox"></ion-icon>
+      <ion-icon [icon]="icons.chatboxOutline"></ion-icon>
       <ion-label>Chatbot</ion-label>
     </ion-tab-button>
     <ion-tab-button tab="trang-ca-nhan">
-      <ion-icon [name]="icons.person"></ion-icon>
+      <ion-icon [icon]="icons.personOutline"></ion-icon>
       <ion-label>Trang cá nhân</ion-label>
     </ion-tab-button>
   </ion-tab-bar>
