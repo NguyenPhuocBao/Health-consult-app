@@ -1,34 +1,44 @@
-<ion-header>
-    <ion-toolbar color="primary">
-      <ion-title>Trợ lý AI</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content>
-    <ion-list>
-      <ion-item *ngFor="let msg of messages">
-        <ion-label>
-          <p>
-            <strong [style.color]="msg.sender === 'user' ? 'blue' : 'green'">
-              {{ msg.sender === 'user' ? 'Bạn' : 'AI' }}
-            </strong>: {{ msg.text }}
-          </p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-content>
-  
+<ion-content>
+  <!-- Form nhập token -->
+  <div *ngIf="showTokenInput" class="token-section">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Nhập Hugging Face Token</ion-card-title>
+        <ion-card-subtitle>Lấy token từ <a href="https://huggingface.co/settings/tokens" target="_blank">Hugging Face</a></ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-input [(ngModel)]="apiKey" type="password" placeholder="hf_xxxxxxxxxxxxxxxx"></ion-input>
+        </ion-item>
+        <ion-button expand="block" (click)="updateToken(apiKey)">Lưu Token</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Hiển thị tin nhắn -->
+  <div #messagesContainer class="messages-container">
+    <div *ngFor="let message of messages" class="message" 
+         [class.user]="message.sender === 'user'"
+         [class.error]="message.error">
+      {{message.text}}
+    </div>
+  </div>
+
+  <!-- Ô nhập tin nhắn -->
   <ion-footer>
     <ion-toolbar>
-      <ion-item lines="none">
-        <ion-input
-          [(ngModel)]="userInput"
-          placeholder="Nhập nội dung..."
-          (keydown.enter)="sendMessage()"
-          clearInput
-        ></ion-input>
-        <ion-button slot="end" (click)="sendMessage()">Gửi</ion-button>
+      <ion-item>
+        <ion-input [(ngModel)]="userInput" 
+                  placeholder="Nhập tin nhắn..." 
+                  (keyup.enter)="sendMessage()"
+                  [disabled]="isLoading || showTokenInput"></ion-input>
+        <ion-button slot="end" 
+                   (click)="sendMessage()" 
+                   [disabled]="isLoading || !userInput.trim() || showTokenInput">
+          <ion-spinner *ngIf="isLoading"></ion-spinner>
+          <ion-icon *ngIf="!isLoading" name="send"></ion-icon>
+        </ion-button>
       </ion-item>
     </ion-toolbar>
   </ion-footer>
-  
+</ion-content>
