@@ -35,6 +35,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/xaydungthucdon/xaydungthucdon.page').then(m => m.XayDungThucDonPage),
   },
   {
+    path: 'chat-AI',
+    loadComponent: () => import('./pages/chat/chat.page').then(m => m.ChatbotPage)
+  },
+  {
     path: '**',
     redirectTo: 'home'
   }

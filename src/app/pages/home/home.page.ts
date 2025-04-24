@@ -2,8 +2,7 @@
 import { Component } from '@angular/core';
 import { 
   IonHeader, IonToolbar, IonTitle, IonContent,
-  IonGrid, IonRow, IonCol, IonCard, IonCardContent,
-  IonIcon, IonRouterLink
+  IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonRouterLink
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -18,7 +17,7 @@ import { appsOutline, chatboxOutline, personOutline } from 'ionicons/icons';
     RouterModule,
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonGrid, IonRow, IonCol, IonCard, IonCardContent,
-    IonIcon, IonRouterLink
+     IonRouterLink
   ]
 })
 export class HomePage {
