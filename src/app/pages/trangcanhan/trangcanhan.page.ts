@@ -18,7 +18,11 @@ import {
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { addIcons } from 'ionicons';
+// import { addIcons } from 'ionicons';
+
+
+
+
 import { 
   calendarOutline,
   restaurantOutline,
@@ -47,12 +51,9 @@ import {
     IonList,
     IonItem,
     IonLabel,
-    IonIcon,
     IonButton,
-    IonTabs,
-    IonTabBar,
-    IonTabButton
-  ]
+    IonIcon,  // BẮT BUỘC có IonIcon
+  ],
 })
 export class TrangCaNhanPage {
   userProfile = {
@@ -65,18 +66,7 @@ export class TrangCaNhanPage {
     private navCtrl: NavController,
     private alertCtrl: AlertController
   ) {
-    addIcons({
-      calendarOutline,
-      restaurantOutline,
-      listOutline,
-      lockClosedOutline,
-      settingsOutline,
-      informationCircleOutline,
-      logOutOutline,
-      appsOutline,
-      chatboxOutline,
-      personOutline
-    });
+      
   }
 
   async confirmLogout() {

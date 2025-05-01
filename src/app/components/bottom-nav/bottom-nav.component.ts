@@ -15,7 +15,7 @@ export class BottomNavComponent {
     { path: '/home', label: 'Trang chủ' }, // Đã bỏ icon
     { path: '/tra-cuu-dinh-duong', label: 'Tra cứu' },
     { path: '/chat-AI', label: 'Chatbot' },
-    { path: '/profile', label: 'Cá nhân' }
+    { path: '/trang-ca-nhan', label: 'Trang Cá nhân' }
   ];
 
   // Đã bỏ constructor và addIcons

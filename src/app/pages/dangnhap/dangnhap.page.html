@@ -1,24 +1,43 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Đăng nhập</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
-  <ion-list>
-    <ion-item>
-      <ion-label position="stacked">Tên đăng nhập của bạn</ion-label>
-      <ion-input placeholder="Tên đăng nhập của bạn"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Mật khẩu</ion-label>
-      <ion-input type="password" placeholder="Nhập mật khẩu của bạn"></ion-input>
-    </ion-item>
-  </ion-list>
+  <form (ngSubmit)="login()"> <!-- Thêm form và sự kiện ngSubmit -->
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label> <!-- Đổi từ "Tên đăng nhập" thành "Email" -->
+        <ion-input 
+          type="email" 
+          placeholder="Nhập email của bạn"
+          [(ngModel)]="loginData.email" 
+          name="email" 
+        ></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="stacked">Mật khẩu</ion-label>
+        <ion-input 
+          type="password" 
+          placeholder="Nhập mật khẩu của bạn"
+          [(ngModel)]="loginData.password" 
+          name="password" 
+        ></ion-input>
+      </ion-item>
+    </ion-list>
 
-  <ion-checkbox slot="start" labelPlacement="end">Lưu thông tin</ion-checkbox>
-  <a href="/quen-mat-khau" class="forgot-password">Quên mật khẩu?</a>
+    <ion-checkbox 
+      slot="start" 
+      labelPlacement="end"
+      [(ngModel)]="loginData.rememberMe" 
+      name="rememberMe" 
+    >Lưu thông tin</ion-checkbox>
 
-  <ion-button expand="block" color="success">Đăng nhập</ion-button>
-  <p class="register-link">Bạn chưa có tài khoản? <a href="/dang-ky">Đăng ký ngay</a></p>
+    <ion-button 
+      expand="block" 
+      color="success" 
+      type="submit" 
+    >Đăng nhập</ion-button>
+  </form>
+
+  <p class="register-link">
+    Bạn chưa có tài khoản? 
+    <a (click)="navigateToRegister()">Đăng ký ngay</a> <!-- Thay href bằng click handler -->
+  </p>
 </ion-content>

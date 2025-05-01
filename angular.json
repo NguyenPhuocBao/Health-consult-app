@@ -34,10 +34,8 @@
             "styles": [
               "src/global.scss",
               "src/theme/variables.scss"
-            ],
-            "scripts": [
-              "node_modules/ionicons/dist/ionicons/ionicons.js"
             ]
+            
           },
           "configurations": {
             "production": {
@@ -94,24 +92,22 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "src/assets",
-                "output": "assets"
-              },
-              {
-                "glob": "**/*",
-                "input": "node_modules/ionicons/dist/ionicons",
-                "output": "./ionicons"
-              }
-            ],
+  {
+    "glob": "**/*",
+    "input": "src/assets",
+    "output": "assets"
+  },
+  {
+    "glob": "**/*",
+    "input": "node_modules/ionicons/dist/ionicons",
+    "output": "ionicons"
+  }
+],
             "styles": [
               "src/global.scss",
               "src/theme/variables.scss"
-            ],
-            "scripts": [
-              "node_modules/ionicons/dist/ionicons/ionicons.js"
             ]
+            
           }
         }
       }

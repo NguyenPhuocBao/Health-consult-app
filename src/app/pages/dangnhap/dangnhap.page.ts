@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { 
-  IonHeader,
-  IonToolbar,
-  IonTitle,
+  //IonHeader,
+  //IonToolbar,
+ // IonTitle,
   IonContent,
   IonList,
   IonItem,
@@ -16,7 +16,8 @@ import {
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router'; // Thay NavController bằng Router
+import { AuthService } from '../../services/user_service';
 
 @Component({
   standalone: true,
@@ -26,10 +27,9 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
+    //IonHeader,
+    //IonToolbar,
+    //IonTitle,
     IonContent,
     IonList,
     IonItem,
@@ -41,48 +41,62 @@ import { RouterModule } from '@angular/router';
 })
 export class DangNhapPage {
   loginData = {
-    username: '',
+    email: '',
     password: '',
     rememberMe: false
   };
 
   constructor(
-    private navCtrl: NavController,
+    private authService: AuthService,
+    private router: Router, // Sử dụng Router thay vì NavController
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController
   ) {}
 
   async login() {
-    // Validate form
-    if (!this.loginData.username || !this.loginData.password) {
+    if (!this.loginData.email || !this.loginData.password) {
       this.showToast('Vui lòng nhập đầy đủ thông tin!');
       return;
     }
-
+  
+    if (!this.validateEmail(this.loginData.email)) {
+      this.showToast('Email không hợp lệ!');
+      return;
+    }
+  
     const loading = await this.loadingCtrl.create({
       message: 'Đang đăng nhập...'
     });
     await loading.present();
-
+  
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      // Gọi login và await (không cần gán kết quả)
+      await this.authService.login({
+        email: this.loginData.email,
+        password: this.loginData.password
+      });
+  
       this.showToast('Đăng nhập thành công!');
-      this.navCtrl.navigateRoot('/home');
-    } catch (error) {
-      this.showToast('Đăng nhập thất bại. Vui lòng thử lại!');
+      this.router.navigate(['/home']);
+    } catch (error: any) {
+      console.error('Login error:', error);
+      this.showToast(error.message || 'Đăng nhập thất bại. Vui lòng thử lại!');
     } finally {
       loading.dismiss();
     }
   }
 
+  private validateEmail(email: string): boolean {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  }
+
   navigateToForgotPassword() {
-    this.navCtrl.navigateForward('/quen-mat-khau');
+    this.router.navigate(['/quen-mat-khau']);
   }
 
   navigateToRegister() {
-    this.navCtrl.navigateForward('/dang-ky');
+    this.router.navigate(['/dang-ky']);
   }
 
   private async showToast(message: string) {

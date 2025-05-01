@@ -1,44 +1,58 @@
-<ion-content>
-  <!-- Form nhập token -->
-  <div *ngIf="showTokenInput" class="token-section">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Nhập Hugging Face Token</ion-card-title>
-        <ion-card-subtitle>Lấy token từ <a href="https://huggingface.co/settings/tokens" target="_blank">Hugging Face</a></ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-item>
-          <ion-input [(ngModel)]="apiKey" type="password" placeholder="hf_xxxxxxxxxxxxxxxx"></ion-input>
-        </ion-item>
-        <ion-button expand="block" (click)="updateToken(apiKey)">Lưu Token</ion-button>
-      </ion-card-content>
-    </ion-card>
-  </div>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Groq AI Assistant</ion-title>
+    <ion-buttons slot="end">
+      <!-- <ion-button (click)="toggleVoiceInput()" [color]="isListening ? 'danger' : 'light'">
+        <ion-icon [name]="isListening ? 'mic-off' : 'mic'"></ion-icon>
+      </ion-button> -->
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
-  <!-- Hiển thị tin nhắn -->
-  <div #messagesContainer class="messages-container">
-    <div *ngFor="let message of messages" class="message" 
-         [class.user]="message.sender === 'user'"
-         [class.error]="message.error">
-      {{message.text}}
+<ion-content class="ion-padding" #contentArea fullscreen>
+  <div class="message-container">
+    <div *ngFor="let msg of messages" class="message-row" [class.user]="msg.role === 'user'">
+      <div class="message-bubble">
+        <div class="message-header">
+          <ion-avatar *ngIf="msg.role === 'assistant'">
+            <img src="assets/ai-avatar.png" alt="AI">
+          </ion-avatar>
+          <ion-text class="message-time">
+            {{ msg.timestamp | date:'HH:mm' }}
+          </ion-text>
+          <ion-avatar *ngIf="msg.role === 'user'">
+            <!-- <img src="assets/user-avatar.png" alt="User"> -->
+          </ion-avatar>
+        </div>
+        <ion-text class="message-content">
+          {{ msg.content }}
+        </ion-text>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="typing-indicator">
+      <ion-spinner name="crescent"></ion-spinner>
+      <ion-text>AI đang trả lời...</ion-text>
     </div>
   </div>
-
-  <!-- Ô nhập tin nhắn -->
-  <ion-footer>
-    <ion-toolbar>
-      <ion-item>
-        <ion-input [(ngModel)]="userInput" 
-                  placeholder="Nhập tin nhắn..." 
-                  (keyup.enter)="sendMessage()"
-                  [disabled]="isLoading || showTokenInput"></ion-input>
-        <ion-button slot="end" 
-                   (click)="sendMessage()" 
-                   [disabled]="isLoading || !userInput.trim() || showTokenInput">
-          <ion-spinner *ngIf="isLoading"></ion-spinner>
-          <ion-icon *ngIf="!isLoading" name="send"></ion-icon>
-        </ion-button>
-      </ion-item>
-    </ion-toolbar>
-  </ion-footer>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-item lines="none" class="input-container">
+      <ion-textarea
+        #chatInput
+        [(ngModel)]="userInput"
+        placeholder="Nhập tin nhắn..."
+        rows="1"
+        autoGrow
+        (keyup.enter)="sendMessage()"
+      ></ion-textarea>
+      <ion-buttons slot="end">
+        <ion-button (click)="sendMessage()" [disabled]="!userInput.trim()">
+          <ion-icon name="send"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

@@ -1,191 +1,166 @@
-import { Component } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { IonicModule } from '@ionic/angular';
-import { FormsModule } from '@angular/forms';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { catchError, throwError, lastValueFrom } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { LoadingController } from '@ionic/angular';
+import { 
+  IonHeader, IonToolbar, IonTitle, IonContent, IonFooter,
+  IonItem, IonTextarea, IonButtons, IonButton, IonIcon,
+  IonAvatar, IonText, IonSpinner
+} from '@ionic/angular/standalone';
+
+type ChatMessage = {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+  timestamp?: Date;
+};
 
 @Component({
-  selector: 'app-chatbot',
-  standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
+  selector: 'app-chat',
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonHeader, IonToolbar, IonTitle, IonContent, IonFooter,
+    IonItem, IonTextarea, IonButtons, IonButton, IonIcon,
+    IonAvatar, IonText, IonSpinner
+  ]
 })
-export class ChatbotPage {
+export class ChatPage {
+  @ViewChild(IonContent) contentArea!: IonContent;
+  @ViewChild('chatInput') chatInput!: ElementRef;
+
+  messages: ChatMessage[] = [];
   userInput = '';
-  messages: { text: string; sender: 'user' | 'bot'; error?: boolean }[] = [];
   isLoading = false;
-  showTokenInput = true;
-  apiKey = '';
-  private model = 'vinai/PhoGPT-7B5-Instruct';
-  private maxRetries = 2;
-  private retryDelay = 15000;
-  private lastValidToken: string | null = null;
+  private apiKey = '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'; // 👈 Nhớ thay bằng key thực
 
-  constructor(private http: HttpClient) {}
-
-  // Kiểm tra token với cache
-  private validateToken(token: string): { valid: boolean; message?: string } {
-    if (this.lastValidToken === token) return { valid: true };
-    
-    if (!token) {
-      return { valid: false, message: 'Vui lòng nhập token Hugging Face' };
-    }
-    if (!token.startsWith('hf_') || token.length < 10) {
-      return { valid: false, message: 'Token phải bắt đầu bằng "hf_" và có ít nhất 10 ký tự' };
-    }
-    return { valid: true };
+  constructor(private loadingCtrl: LoadingController) {
+    this.initChat(); // Khởi tạo chat khi component được tạo
   }
 
-  async sendMessage() {
-    try {
-      const input = this.userInput.trim();
-      if (!input || this.isLoading) return;
-
-      // Validate token
-      const tokenValidation = this.validateToken(this.apiKey);
-      if (!tokenValidation.valid) {
-        if (!this.showTokenInput) {
-          this.showTokenInput = true;
-          this.addBotMessage(tokenValidation.message!);
-        }
-        return;
+  // Thêm phương thức initChat()
+  private initChat() {
+    const savedMessages = localStorage.getItem('chat_history');
+    this.messages = savedMessages ? JSON.parse(savedMessages) : [
+      { 
+        role: 'assistant', 
+        content: 'Xin chào! Tôi là AI trợ lý, bạn cần giúp gì?',
+        timestamp: new Date() 
       }
+    ];
+  }
 
-      this.addUserMessage(input);
-      this.userInput = '';
-      this.isLoading = true;
+  // ========== Phương thức chính ==========
+  async sendMessage() {
+    if (!this.userInput.trim()) return;
 
-      // Gọi API với retry tự động
-      const formattedPrompt = this.formatPhoGPTPrompt(input);
-      const response = await this.queryAPIWithRetry(formattedPrompt);
-      this.handleAPIResponse(response, formattedPrompt);
+    const userMessage = this.userInput;
+    this.userInput = '';
+    this.addMessage('user', userMessage);
 
+    await this.processAIResponse();
+  }
+
+  private async processAIResponse() {
+    this.isLoading = true;
+    const loading = await this.showLoading();
+
+    try {
+      const aiResponse = await this.callGroqAPI(this.getLastMessages(10));
+      this.addMessage('assistant', aiResponse);
     } catch (error) {
-      await this.handleAPIError(error as HttpErrorResponse);
+      this.handleAPIError(error);
     } finally {
       this.isLoading = false;
+      await loading.dismiss();
+      this.scrollToBottom();
+      this.saveChatHistory();
     }
   }
 
-  private formatPhoGPTPrompt(input: string): string {
-    const cleanedInput = input.replace(/<s>\[\/?INST\]/g, '').trim();
-    return `<s>[INST] ${cleanedInput} [/INST]`;
-  }
+  // ========== Xử lý API ==========
+  private async callGroqAPI(messages: any[]): Promise<string> {
+    const API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000); // Timeout 15s
 
-  private async queryAPIWithRetry(prompt: string, attempt = 0): Promise<any> {
     try {
-      const body = {
-        inputs: prompt,
-        parameters: {
-          max_new_tokens: 120,
-          temperature: 0.7,  // Giảm nhiệt độ để ổn định hơn
-          top_p: 0.9,
-          repetition_penalty: 1.1,  // Giảm penalty để tránh lỗi
-          do_sample: true,
-          return_full_text: false
-        }
-      };
-
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${this.apiKey}`,
-        'Content-Type': 'application/json'
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'mixtral-8x7b-32768',
+          messages,
+          temperature: 0.7
+        }),
+        signal: controller.signal
       });
 
-      const response$ = this.http.post<any>(
-        `https://api-inference.huggingface.co/models/${this.model}`,
-        body,
-        { headers }
-      ).pipe(
-        catchError(error => throwError(() => error))
-      );
+      clearTimeout(timeout);
 
-      return await lastValueFrom(response$);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.choices[0]?.message?.content || 'Không có phản hồi';
 
     } catch (error) {
-      if (attempt < this.maxRetries && this.isRetryableError(error)) {
-        await new Promise(resolve => setTimeout(resolve, this.retryDelay));
-        return this.queryAPIWithRetry(prompt, attempt + 1);
-      }
+      clearTimeout(timeout);
       throw error;
     }
   }
 
-  private isRetryableError(error: any): boolean {
-    const status = error.status || error.response?.status;
-    return status === 503 || status === 429;
-  }
-
-  private handleAPIResponse(response: any, prompt: string) {
-    if (!response || !Array.isArray(response)) {
-      throw new Error('Phản hồi API không hợp lệ');
-    }
-
-    let aiText = response[0]?.generated_text || 'Xin lỗi, tôi không hiểu câu hỏi của bạn.';
-    aiText = aiText.replace(prompt, '').trim();
+  private handleAPIError(error: any) {
+    let errorMessage = '⚠️ Lỗi kết nối AI';
     
-    if (!aiText) {
-      aiText = 'Tôi không có phản hồi cho câu hỏi này. Bạn có thể hỏi cách khác không?';
+    if (error.name === 'AbortError') {
+      errorMessage = '⏱️ Hết thời gian chờ phản hồi';
+    } else if (error.message.includes('401')) {
+      errorMessage = '🔑 Lỗi xác thực API Key';
+    } else if (error.message.includes('429')) {
+      errorMessage = '🔄 Quá nhiều yêu cầu, thử lại sau';
     }
-    
-    this.addBotMessage(aiText);
+
+    this.addMessage('assistant', errorMessage);
+    console.error('Chi tiết lỗi:', error);
   }
 
-  private async handleAPIError(error: HttpErrorResponse) {
-    console.error('API Error:', error);
-    
-    let errorMessage = 'Đã xảy ra lỗi khi xử lý yêu cầu';
-    
-    if (error.status === 400) {
-      errorMessage = this.parse400Error(error);
-    } 
-    else if (error.status === 401 || error.status === 403) {
-      errorMessage = 'Xác thực thất bại. Vui lòng kiểm tra lại token';
-      this.lastValidToken = null;
-      this.showTokenInput = true;
-    }
-    else if (error.status === 503) {
-      errorMessage = 'Model đang tải. Vui lòng thử lại sau 15-20 giây...';
-    }
-    else if (error.status === 429) {
-      errorMessage = 'Bạn đã gửi quá nhiều yêu cầu. Vui lòng chờ 1 phút.';
-    }
-
-    if (!this.messages.some(m => m.text === errorMessage && m.sender === 'bot')) {
-      this.addBotMessage(errorMessage, true);
-    }
+  // ========== Các phương thức hỗ trợ ==========
+  private addMessage(role: ChatMessage['role'], content: string) {
+    this.messages.push({
+      role,
+      content,
+      timestamp: new Date()
+    });
   }
 
-  private parse400Error(error: HttpErrorResponse): string {
-    const errorDetail = error.error?.error?.toLowerCase() || '';
-    
-    if (errorDetail.includes('invalid input')) {
-      return 'Nội dung không hợp lệ. Vui lòng thử cách diễn đạt khác';
-    }
-    if (errorDetail.includes('too long')) {
-      return 'Nội dung quá dài. Vui lòng rút ngắn câu hỏi';
-    }
-    return 'Yêu cầu không hợp lệ. Vui lòng thử lại';
+  private getLastMessages(limit: number): ChatMessage[] {
+    return this.messages.slice(-limit).map(msg => ({
+      role: msg.role,
+      content: msg.content
+    }));
   }
 
-  private addUserMessage(text: string) {
-    this.messages.push({ text, sender: 'user' });
+  private async showLoading() {
+    const loading = await this.loadingCtrl.create({
+      message: 'AI đang xử lý...',
+      spinner: 'crescent'
+    });
+    await loading.present();
+    return loading;
   }
 
-  private addBotMessage(text: string, isError = false) {
-    this.messages.push({ text, sender: 'bot', error: isError });
+  private scrollToBottom() {
+    setTimeout(() => this.contentArea.scrollToBottom(300), 100);
   }
 
-  updateToken(newToken: string) {
-    const validation = this.validateToken(newToken);
-    if (validation.valid) {
-      this.apiKey = newToken.trim();
-      this.lastValidToken = this.apiKey;
-      this.showTokenInput = false;
-      this.addBotMessage('Token đã được cập nhật thành công!');
-    } else {
-      this.addBotMessage(validation.message || 'Token không hợp lệ', true);
-    }
+  private saveChatHistory() {
+    localStorage.setItem('chat_history', JSON.stringify(this.messages));
   }
 }

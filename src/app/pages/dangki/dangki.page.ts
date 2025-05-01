@@ -1,46 +1,25 @@
 import { Component } from '@angular/core';
-import { 
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonInput,
-  IonSelect,
-  IonSelectOption,
-  IonButton,
-  IonButtons,
-  IonBackButton,
-  NavController,
-  ToastController
-} from '@ionic/angular/standalone';
+import { AuthService } from '../../services/user_service';
+import { NavController, ToastController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
 
+
+import { environment } from '../../../environments/environment';
+
+const firebaseConfig = environment.firebaseConfig;
 @Component({
   standalone: true,
+  selector: 'app-dangki',
   templateUrl: './dangki.page.html',
   styleUrls: ['./dangki.page.scss'],
   imports: [
     CommonModule,
     FormsModule,
     RouterModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonList,
-    IonItem,
-    IonLabel,
-    IonInput,
-    IonSelect,
-    IonSelectOption,
-    IonButton,
-    IonButtons,
-    IonBackButton
+    IonicModule // Đảm bảo có IonicModule ở đây để sử dụng các component của Ionic
   ]
 })
 export class DangKyPage {
@@ -61,27 +40,23 @@ export class DangKyPage {
   ];
 
   constructor(
+    private authService: AuthService,
     private navCtrl: NavController,
     private toastCtrl: ToastController
   ) {}
 
   async register() {
-    // Validate form
     if (!this.validateForm()) {
       return;
     }
 
-    // Check password match
     if (this.registerData.password !== this.registerData.confirmPassword) {
       this.showToast('Mật khẩu không khớp!');
       return;
     }
 
-    // Here you would typically call your API service
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await this.authService.register(this.registerData);
       this.showToast('Đăng ký thành công!');
       this.navCtrl.navigateRoot('/dang-nhap');
     } catch (error) {
