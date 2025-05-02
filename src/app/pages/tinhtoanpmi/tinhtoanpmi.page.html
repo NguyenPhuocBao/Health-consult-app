@@ -11,30 +11,45 @@
   <ion-list>
     <ion-item>
       <ion-label>Ngày đo *</ion-label>
-      <ion-datetime placeholder="09/04/2025" display-format="DD/MM/YYYY"></ion-datetime>
+      <ion-datetime [(ngModel)]="calculationData.measurementDate" placeholder="09/04/2025" display-format="DD/MM/YYYY"></ion-datetime>
     </ion-item>
     <ion-item>
       <ion-label>Ngày sinh của bạn *</ion-label>
-      <ion-datetime placeholder="11/09/2004" display-format="DD/MM/YYYY"></ion-datetime>
-      <ion-input type="number" placeholder="20" slot="end"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Giới tính *</ion-label>
-      <ion-radio-group>
-        <ion-radio value="male" checked>Nam</ion-radio>
-        <ion-radio value="female">Nữ</ion-radio>
-      </ion-radio-group>
+      <ion-datetime [(ngModel)]="calculationData.birthDate" placeholder="11/09/2004" display-format="DD/MM/YYYY"></ion-datetime>
     </ion-item>
     <ion-item>
       <ion-label>Cân nặng *</ion-label>
-      <ion-input type="number" placeholder="Kg"></ion-input>
+      <ion-input [(ngModel)]="calculationData.weight" type="number" placeholder="Kg"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Chiều cao *</ion-label>
-      <ion-input type="number" placeholder="Cm"></ion-input>
+      <ion-input [(ngModel)]="calculationData.height" type="number" placeholder="Cm"></ion-input>
     </ion-item>
   </ion-list>
 
-  <ion-button expand="block" color="success">Tính toán</ion-button>
-  <ion-button expand="block" color="warning" fill="outline">Làm mới</ion-button>
+  <ion-button expand="block" color="success" (click)="calculateBMI()">Tính toán</ion-button>
+
+  <ion-button expand="block" color="warning" fill="outline" (click) = "resetForm()">Làm mới</ion-button>
+
+  <!-- Kết quả tính toán -->
+  <ion-card *ngIf="calculationData.bmiResult">
+    <ion-card-header>
+      <ion-card-title>Kết quả</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>BMI</ion-label>
+        <ion-text slot="end">{{ calculationData.bmiResult.toFixed(1) }}</ion-text>
+      </ion-item>
+      <ion-item>
+        <ion-label>Z-score</ion-label>
+        <ion-text slot="end">{{ calculationData.zScore?.toFixed(2) }}</ion-text>
+      </ion-item>
+      <ion-item>
+        <ion-label>Thể loại</ion-label>
+        <ion-text slot="end">{{ calculationData.category }}</ion-text>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+  
 </ion-content>

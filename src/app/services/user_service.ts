@@ -47,13 +47,14 @@ shouldRedirectToHome(): boolean {
          this.router.url !== '/dang-nhap' &&
          !!this.auth.currentUser;
 }
-  private initAuthStateListener(): void {
-    onAuthStateChanged(this.auth, (user) => {
-      if (user && this.shouldRedirectToHome()) {
-        this.router.navigate(['/home']);
-      }
-    });
-  }
+private initAuthStateListener(): void {
+  onAuthStateChanged(this.auth, (user) => {
+    this.currentUserSubject.next(user); 
+    if (user && this.shouldRedirectToHome()) {
+      this.router.navigate(['/home']);
+    }
+  });
+}
   
   // Hash password với salt và pepper
   async hashPassword(password: string): Promise<string> {
@@ -195,9 +196,10 @@ shouldRedirectToHome(): boolean {
  
   // Kiểm tra xem username đã tồn tại chưa
   async checkUsernameExists(username: string): Promise<boolean> {
-    // Cần triển khai truy vấn Firestore
-    // Tạm thời trả về false
-    return false;
+    const usersRef = collection(this.firestore, 'users');
+    const q = query(usersRef, where('username', '==', username));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
   }
 
   // Xử lý lỗi Firebase
