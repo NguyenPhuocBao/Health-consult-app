@@ -11,49 +11,89 @@
   <h2>Thông tin cá nhân</h2>
   <ion-list>
     <ion-item>
-      <ion-label>Ngày sinh của bạn *</ion-label>
-      <ion-datetime placeholder="11/09/2004" display-format="DD/MM/YYYY"></ion-datetime>
-      <ion-input type="number" placeholder="20" slot="end"></ion-input>
+      <ion-label position="stacked">Ngày sinh *</ion-label>
+      <ion-datetime 
+        [(ngModel)]="birthDate" 
+        (ionChange)="calculateAge()"
+        display-format="DD/MM/YYYY" 
+        placeholder="Chọn ngày">
+      </ion-datetime>
+      <ion-input 
+        type="number" 
+        [(ngModel)]="age" 
+        placeholder="Tuổi"
+        readonly>
+      </ion-input>
     </ion-item>
+
     <ion-item>
       <ion-label>Giới tính *</ion-label>
-      <ion-radio-group>
-        <ion-radio value="male" checked>Nam</ion-radio>
-        <ion-radio value="female">Nữ</ion-radio>
+      <ion-radio-group [(ngModel)]="gender">
+        <ion-radio value="male" slot="start">Nam</ion-radio>
+        <ion-radio value="female" slot="start">Nữ</ion-radio>
       </ion-radio-group>
     </ion-item>
+
     <ion-item>
-      <ion-label>Mức độ hoạt động thể lực *</ion-label>
-      <ion-radio-group>
-        <ion-radio value="low">Nặng</ion-radio>
-        <ion-radio value="medium">Trung Bình</ion-radio>
-        <ion-radio value="high" checked>Nhẹ</ion-radio>
+      <ion-label>Mức độ hoạt động *</ion-label>
+      <ion-radio-group [(ngModel)]="activityLevel">
+        <ion-radio value="high" slot="start">Nhẹ</ion-radio>
+        <ion-radio value="medium" slot="start">Trung bình</ion-radio>
+        <ion-radio value="low" slot="start">Nặng</ion-radio>
       </ion-radio-group>
     </ion-item>
+
     <ion-item>
-      <ion-label>Cân nặng *</ion-label>
-      <ion-input type="number" placeholder="Kg"></ion-input>
+      <ion-label position="stacked">Cân nặng (kg) *</ion-label>
+      <ion-input 
+        type="number" 
+        [(ngModel)]="weight" 
+        placeholder="Nhập cân nặng">
+      </ion-input>
     </ion-item>
+
     <ion-item>
-      <ion-label>Chiều cao *</ion-label>
-      <ion-input type="number" placeholder="Cm"></ion-input>
+      <ion-label position="stacked">Chiều cao (cm) *</ion-label>
+      <ion-input 
+        type="number" 
+        [(ngModel)]="height" 
+        placeholder="Nhập chiều cao">
+      </ion-input>
     </ion-item>
+
     <ion-item>
-      <ion-label>Chế độ ăn *</ion-label>
-      <ion-select placeholder="Chọn...">
-        <ion-select-option value="option1">Tùy chọn 1</ion-select-option>
-        <ion-select-option value="option2">Tùy chọn 2</ion-select-option>
+      <ion-label position="stacked">Chế độ ăn *</ion-label>
+      <ion-select [(ngModel)]="dietType" interface="action-sheet">
+        <ion-select-option *ngFor="let option of dietOptions" [value]="option.value">
+          {{ option.text }}
+        </ion-select-option>
       </ion-select>
     </ion-item>
+
     <ion-item>
-      <ion-label>Ngày thiết kế *</ion-label>
-      <ion-datetime placeholder="09/04/2025" display-format="DD/MM/YYYY"></ion-datetime>
+      <ion-label position="stacked">Ngày thiết kế *</ion-label>
+      <ion-datetime 
+        [(ngModel)]="designDate" 
+        display-format="DD/MM/YYYY" 
+        placeholder="Chọn ngày">
+      </ion-datetime>
     </ion-item>
+
     <ion-item>
-      <ion-label>Số bữa ăn *</ion-label>
-      <ion-input type="number" placeholder=""></ion-input>
+      <ion-label position="stacked">Số bữa ăn/ngày *</ion-label>
+      <ion-input 
+        type="number" 
+        [(ngModel)]="mealCount" 
+        placeholder="Nhập số bữa"
+        min="3" max="6">
+      </ion-input>
     </ion-item>
   </ion-list>
 
-  <ion-button expand="block" color="success">Tiếp theo</ion-button>
+  <ion-button 
+    expand="block" 
+    color="success"
+    (click)="nextStep()">
+    Tạo thực đơn
+  </ion-button>
 </ion-content>
